@@ -1,0 +1,32 @@
+name: ci-checks
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        check: [typing, lint, format]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version-file: .python-version
+      - name: Install deps
+        run: uv sync --group dev
+      - name: Typing
+        if: matrix.check == 'typing'
+        run: uv run ty check
+      - name: Lint
+        if: matrix.check == 'lint'
+        run: uv run ruff check .
+      - name: Format
+        if: matrix.check == 'format'
+        run: uv run ruff format --check .
