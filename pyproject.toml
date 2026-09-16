@@ -14,3 +14,38 @@ dev = [
     "ruff>=0.16.7",
     "ty>=0.0.80",
 ]
+
+
+[tool.ruff]
+line-length = 88
+indent-width = 4
+target-version = "py311"
+
+exclude = [".git", "__pycache__", "styles", ".vscode", ".github"]
+
+[tool.ruff.lint]
+select = [
+	"F",
+	"E",
+	"W",
+	"N",
+	"UP",
+	"ANN",
+	"BLE",
+	"A",
+	"COM",
+	"C4",
+	"DTZ",
+	"Q",
+	"SLF",
+	"SIM",
+	"PTH",
+	"I",
+]
+ignore = ["COM812"]
+fixable = ["ALL"]
+
+[tool.ruff.format]
+quote-style = "single"
+skip-magic-trailing-comma = false
+line-ending = "auto"
