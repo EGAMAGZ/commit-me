@@ -46,6 +46,6 @@ ignore = ["COM812"]
 fixable = ["ALL"]
 
 [tool.ruff.format]
-quote-style = "single"
+quote-style = "double"
 skip-magic-trailing-comma = false
 line-ending = "auto"

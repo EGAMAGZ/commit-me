@@ -17,5 +17,5 @@ def is_cli_installed(cli_info: Cli) -> bool:
     return bool(shutil.which(cli_info["cmd"]))
 
 
-def check_required_clis():
+def check_required_clis() -> None:
     pass
