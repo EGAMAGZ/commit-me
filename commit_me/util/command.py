@@ -3,6 +3,8 @@
 import shutil
 from typing import TypedDict
 
+import rich_click as click
+
 from commit_me.exceptions import MissingCliError
 
 
@@ -38,3 +40,13 @@ def check_required_clis() -> dict[str, dict]:
         raise MissingCliError(missing_clis)
 
     return {cli["cmd"]: {"path": shutil.which(cli["cmd"])} for cli in REQUIRED_CLIS}
+
+
+def create_commit(
+    message: str,
+    preview: bool,
+) -> None:
+    if preview:
+        click.echo(f"{message}")
+        if click.confirm("Create commit?"):
+            pass
