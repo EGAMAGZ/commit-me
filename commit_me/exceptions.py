@@ -14,4 +14,4 @@ class MissingCliError(Exception):
             cli_names: Names of the CLIs that are missing.
         """
         self.cli_names = cli_names
-        super().__init__(self.MESSAGE_TEMPLATE.format(cli_names=cli_names))
+        super().__init__(self.MESSAGE_TEMPLATE.format(cli_names=",".join(cli_names)))
