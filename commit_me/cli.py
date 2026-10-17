@@ -8,6 +8,9 @@ from commit_me.ai import generate_commit
 from commit_me.exceptions import MissingCliError
 from commit_me.util.command import check_required_clis
 
+from commit_me.exceptions import MissingCliError
+from commit_me.util.command import check_required_clis
+
 
 @click.command()
 @click.argument(
