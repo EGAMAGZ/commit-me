@@ -31,8 +31,10 @@ def is_cli_installed(cli_info: Cli) -> bool:
     return bool(shutil.which(cli_info["cmd"]))
 
 
-def check_required_clis() -> None:
+def check_required_clis() -> dict[str, dict]:
     """Raise MissingCliError if any required CLI is not installed."""
     missing_clis = [cli["name"] for cli in REQUIRED_CLIS if not is_cli_installed(cli)]
     if missing_clis:
         raise MissingCliError(missing_clis)
+
+    return {cli["cmd"]: {"path": shutil.which(cli["cmd"])} for cli in REQUIRED_CLIS}

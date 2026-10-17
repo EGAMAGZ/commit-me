@@ -2,7 +2,11 @@
 
 import pathlib
 
-import click
+import rich_click as click
+
+from commit_me.ai import generate_commit
+from commit_me.exceptions import MissingCliError
+from commit_me.util.command import check_required_clis
 
 from commit_me.exceptions import MissingCliError
 from commit_me.util.command import check_required_clis
@@ -23,7 +27,8 @@ def commit_me_cli(path: pathlib.Path, preview: bool) -> None:
         preview: Whether to preview the commit without applying it.
     """
     try:
-        check_required_clis()
+        clis = check_required_clis()
+        generate_commit(opencode_binary=clis["opencode"]["path"], preview=preview)
         click.echo(path)
         click.echo(preview)
     except MissingCliError as exception:
