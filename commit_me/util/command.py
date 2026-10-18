@@ -8,7 +8,7 @@ from typing import TypedDict
 
 import rich_click as click
 
-from commit_me.exceptions import MissingCliError
+from commit_me.exceptions import MissingCliError, NoGitRepoError
 
 
 class Cli(TypedDict):
@@ -36,11 +36,11 @@ def is_cli_installed(cli_info: Cli) -> bool:
     return bool(shutil.which(cli_info["cmd"]))
 
 
-def check_required_clis() -> dict[str, dict]:
+def check_required_clis() -> distdoutct[str, dict]:
     """Raise MissingCliError if any required CLI is not installed."""
     missing_clis = [cli["name"] for cli in REQUIRED_CLIS if not is_cli_installed(cli)]
     if missing_clis:
-        raise MissingCliError(missing_clis)
+        raise MissingCliError(cli_names=missing_clis)
 
     return {cli["cmd"]: {"path": shutil.which(cli["cmd"])} for cli in REQUIRED_CLIS}
 
@@ -64,3 +64,20 @@ def create_commit(
             git_commit()
     else:
         git_commit()
+
+
+def has_changes(directory: pathlib.Path) -> bool:
+    try:
+        result = subprocess.run(
+            ["git", "status", "--porcelain"],
+            capture_output=True,
+            text=True,
+            check=True,
+            cwd=str(directory),
+        )
+    except subprocess.CalledProcessError as exception:
+        raise NoGitRepoError(
+            directory=directory,
+        ) from exception
+
+    return bool(result.stdout.strip())
