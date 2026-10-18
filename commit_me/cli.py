@@ -18,11 +18,11 @@ from commit_me.util.command import check_required_clis, create_commit, has_stage
 )
 @click.option("-p", "--preview", is_flag=True)
 def commit_me_cli(directory: pathlib.Path, preview: bool) -> None:
-    """Commit-me cli entrypoint
+    """Generate a Conventional Commit message with opencode and commit it.
 
     Args:
-        path: Existing directory to run against.
-        preview: Whether to preview the commit without applying it.
+        directory: Existing directory of the Git repository to commit in.
+        preview: Whether to preview the commit message before committing.
     """
     try:
         clis = check_required_clis()
@@ -40,7 +40,7 @@ def commit_me_cli(directory: pathlib.Path, preview: bool) -> None:
                 on_start=lambda: status.update("Starting opencode"),
                 on_thinking=lambda: status.update("Opencode is thinking..."),
                 on_progress=lambda e: None,
-                on_finish=lambda: status.update("Finish"),
+                on_finish=lambda: status.update("Done"),
             )
 
         create_commit(
@@ -48,12 +48,8 @@ def commit_me_cli(directory: pathlib.Path, preview: bool) -> None:
             directory=directory,
             preview=preview,
         )
-    except MissingCliError as exception:
-        click.echo(exception)
-    except NoGitRepoError as exception:
-        click.echo(exception)
-    except NoStagedChangesError as exception:
-        click.echo(exception)
+    except (MissingCliError, NoGitRepoError, NoStagedChangesError) as exception:
+        click.echo(exception, err=True)
 
 
 if __name__ == "__main__":

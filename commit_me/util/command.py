@@ -7,7 +7,7 @@ from typing import TypedDict
 
 import rich_click as click
 
-from commit_me.exceptions import MissingCliError, NoGitRepoError, NoStagedChangesError
+from commit_me.exceptions import MissingCliError, NoGitRepoError
 
 
 class Cli(TypedDict):
@@ -50,7 +50,16 @@ def create_commit(
     directory: pathlib.Path,
     preview: bool,
 ) -> None:
+    """Create a Git commit with the given message, optionally after a preview.
+
+    Args:
+        message: Commit message to use.
+        directory: Directory of the Git repository to commit in.
+        preview: Whether to show the message and ask for confirmation first.
+    """
+
     def git_commit() -> None:
+        """Run `git commit` with the message in the target directory."""
         subprocess.run(
             args=["git", "commit", "-m", f"{message}"],
             cwd=str(directory),
@@ -58,14 +67,25 @@ def create_commit(
         )
 
     if preview:
-        click.echo(f"{message}")
-        if click.confirm("Create commit?"):
+        click.echo(f"Proposed commit message:\n\n{message}")
+        if click.confirm("Create this commit?"):
             git_commit()
     else:
         git_commit()
 
 
 def has_stage_changes(directory: pathlib.Path) -> bool:
+    """Return whether the repository has staged changes.
+
+    Args:
+        directory: Directory of the Git repository to check.
+
+    Returns:
+        True if there are staged changes.
+
+    Raises:
+        NoGitRepoError: If the directory is not inside a Git repository.
+    """
     result = subprocess.run(
         ["git", "diff", "--cached", "--quiet"],
         text=True,

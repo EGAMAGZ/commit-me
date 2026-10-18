@@ -1,3 +1,5 @@
+"""Prompt used to ask opencode for a Conventional Commit message."""
+
 from typing import Final
 
 PROMPT: Final[str] = """

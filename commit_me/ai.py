@@ -1,3 +1,5 @@
+"""Generate commit messages by streaming an opencode session."""
+
 import pathlib
 from collections.abc import Callable
 from typing import Any, TypedDict
@@ -29,6 +31,15 @@ Handlers = TypedDict(
 
 
 def make_handler(callback: EventCallback) -> EventCallback:
+    """Wrap an event callback into a stream event handler.
+
+    Args:
+        callback: Callback invoked with the event properties.
+
+    Returns:
+        A handler suitable for the handlers mapping.
+    """
+
     def handler(props: dict[str, Any]) -> None:
         callback(props)
 
@@ -44,6 +55,22 @@ def generate_commit_message(
     on_progress: ProgressCallback,
     on_finish: Callback,
 ) -> str:
+    """Generate a Conventional Commit message from the staged changes.
+
+    Starts an opencode session in the given directory, streams its response,
+    and assembles the assistant's text parts into a single commit message.
+
+    Args:
+        opencode_binary: Path to the opencode executable.
+        directory: Directory of the Git repository to analyze.
+        on_start: Called before the opencode session starts.
+        on_thinking: Called once when opencode starts thinking.
+        on_progress: Called with each streamed text delta.
+        on_finish: Called once the message has been assembled.
+
+    Returns:
+        The generated commit message.
+    """
     assistant_message_ids: set[str] = set()
     part_message_ids: dict[str, str] = {}
     part_texts: dict[str, str] = {}
