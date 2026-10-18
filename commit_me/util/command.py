@@ -3,7 +3,7 @@
 import pathlib
 import shutil
 import subprocess
-from typing import TypedDict, Never
+from typing import Never, TypedDict
 
 import rich_click as click
 
@@ -74,7 +74,7 @@ def create_commit(
         git_commit()
 
 
-def has_stage_changes(directory: pathlib.Path) -> bool:
+def has_stage_changes(directory: pathlib.Path) -> bool | Never:
     """Return whether the repository has staged changes.
 
     Args:
