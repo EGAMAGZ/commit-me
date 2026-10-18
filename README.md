@@ -2,6 +2,8 @@
 
 [![PyPI version](https://img.shields.io/pypi/v/commit-me.svg)](https://pypi.org/project/commit-me/)
 [![PyPI - Python versions](https://img.shields.io/pypi/pyversions/commit-me.svg)](https://pypi.org/project/commit-me/)
+[![PyPI downloads](https://img.shields.io/pypi/dm/commit-me.svg)](https://pypi.org/project/commit-me/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![CI](https://github.com/EGAMAGZ/commit-me/actions/workflows/ci.yml/badge.svg)](https://github.com/EGAMAGZ/commit-me/actions/workflows/ci.yml)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
@@ -65,3 +67,7 @@ uv run ty check
 uv run ruff check .
 uv run ruff format --check .
 ```
+
+## License
+
+MIT — see [LICENSE](LICENSE).
