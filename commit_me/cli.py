@@ -39,7 +39,7 @@ def commit_me_cli(directory: pathlib.Path, preview: bool) -> None:
                 directory=directory,
                 on_start=lambda: status.update("Starting opencode"),
                 on_thinking=lambda: status.update("Opencode is thinking..."),
-                on_progress=lambda e: None,
+                on_progress=lambda _e: None,
                 on_finish=lambda: status.update("Done"),
             )
 

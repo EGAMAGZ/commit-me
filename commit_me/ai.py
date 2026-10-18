@@ -153,35 +153,33 @@ def generate_commit_message(
         session = oc.create_session()
         response = oc.client.event_subscribe()
 
-        try:
-            oc.client.session_send(
-                session.id,
-                {"parts": [{"type": "text", "text": PROMPT}]},
-            )
+        oc.client.session_send(
+            session.id,
+            {"parts": [{"type": "text", "text": PROMPT}]},
+        )
 
-            for line in response.iter_lines():
-                if not line.startswith("data: "):
-                    continue
+        for line in response.iter_lines():
+            if not line.startswith("data: "):
+                continue
 
-                event = parse_stream_event(line[6:])
-                props = event.properties
+            event = parse_stream_event(line[6:])
+            props = event.properties
 
-                if props.get("sessionID") not in (None, session.id):
-                    continue
+            if props.get("sessionID") not in (None, session.id):
+                continue
 
-                handler = handlers.get(event.type)
-                if handler:
-                    handler(props)
+            handler = handlers.get(event.type)
+            if handler:
+                handler(props)
 
-                if event.type == "session.idle":
+            if event.type == "session.idle":
+                break
+
+            if event.type == "session.status":
+                status = SessionStatusProps.model_construct(**props)
+                if status.status.get("type") == "idle":
                     break
-
-                if event.type == "session.status":
-                    status = SessionStatusProps.model_construct(**props)
-                    if status.status.get("type") == "idle":
-                        break
-        finally:
-            response.close()
+        response.close()
 
     result_parts: list[str] = []
 
