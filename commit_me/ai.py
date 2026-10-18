@@ -137,7 +137,7 @@ def generate_commit_message(
         if status == "busy":
             notify_thinking()
 
-    handlers = {
+    handlers: Handlers = {
         "message.updated": make_handler(handle_message_updated),
         "message.part.updated": make_handler(handle_part_updated),
         "message.part.delta": make_handler(handle_part_delta),
