@@ -17,7 +17,8 @@ from commit_me.util.command import check_required_clis, create_commit, has_stage
     default=pathlib.Path.cwd(),
 )
 @click.option("-p", "--preview", is_flag=True)
-def commit_me_cli(directory: pathlib.Path, preview: bool) -> None:
+@click.option("-m", "--model", default="opencode/big-pickle")
+def commit_me_cli(directory: pathlib.Path, preview: bool, model: str) -> None:
     """Generate a Conventional Commit message with opencode and commit it.
 
     Args:
@@ -37,6 +38,7 @@ def commit_me_cli(directory: pathlib.Path, preview: bool) -> None:
             commit_message = generate_commit_message(
                 opencode_binary=clis["opencode"]["path"],
                 directory=directory,
+                model=model,
                 on_start=lambda: status.update("Starting opencode"),
                 on_thinking=lambda: status.update("Opencode is thinking..."),
                 on_progress=lambda _e: None,

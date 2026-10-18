@@ -49,6 +49,7 @@ def make_handler(callback: EventCallback) -> EventCallback:
 def generate_commit_message(
     opencode_binary: str,
     directory: pathlib.Path,
+    model: str,
     *,
     on_start: Callback,
     on_thinking: Callback,
@@ -149,6 +150,7 @@ def generate_commit_message(
     with Opencode(
         opencode_binary=opencode_binary,
         directory=str(directory),
+        model=model,
     ) as oc:
         session = oc.create_session()
         response = oc.client.event_subscribe()

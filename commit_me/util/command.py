@@ -3,7 +3,7 @@
 import pathlib
 import shutil
 import subprocess
-from typing import TypedDict
+from typing import Never, TypedDict
 
 import rich_click as click
 
@@ -35,7 +35,7 @@ def is_cli_installed(cli_info: Cli) -> bool:
     return bool(shutil.which(cli_info["cmd"]))
 
 
-def check_required_clis() -> dict[str, dict]:
+def check_required_clis() -> dict[str, dict] | Never:
     """Raise MissingCliError if any required CLI is not installed."""
     missing_clis = [cli["name"] for cli in REQUIRED_CLIS if not is_cli_installed(cli)]
     if missing_clis:
@@ -74,7 +74,7 @@ def create_commit(
         git_commit()
 
 
-def has_stage_changes(directory: pathlib.Path) -> bool:
+def has_stage_changes(directory: pathlib.Path) -> bool | Never:
     """Return whether the repository has staged changes.
 
     Args:
