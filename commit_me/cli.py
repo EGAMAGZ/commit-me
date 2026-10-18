@@ -6,12 +6,8 @@ import rich_click as click
 from rich.console import Console
 
 from commit_me.ai import generate_commit_message
-from commit_me.exceptions import (
-    MissingCliError,
-    RepoWithoutChangesError,
-    NoGitRepoError,
-)
-from commit_me.util.command import check_required_clis, create_commit, has_changes
+from commit_me.exceptions import MissingCliError, NoGitRepoError, NoStagedChangesError
+from commit_me.util.command import check_required_clis, create_commit, has_stage_changes
 
 
 @click.command()
@@ -31,9 +27,10 @@ def commit_me_cli(directory: pathlib.Path, preview: bool) -> None:
     try:
         clis = check_required_clis()
 
-        contains_changes = has_changes(directory)
-        if not contains_changes:
-            raise RepoWithoutChangesError
+        contains_stage = has_stage_changes(directory)
+
+        if not contains_stage:
+            raise NoStagedChangesError(directory=directory)
 
         console = Console()
         with console.status("Calling opencode") as status:
@@ -53,9 +50,9 @@ def commit_me_cli(directory: pathlib.Path, preview: bool) -> None:
         )
     except MissingCliError as exception:
         click.echo(exception)
-    except RepoWithoutChangesError as exception:
-        click.echo(exception)
     except NoGitRepoError as exception:
+        click.echo(exception)
+    except NoStagedChangesError as exception:
         click.echo(exception)
 
 

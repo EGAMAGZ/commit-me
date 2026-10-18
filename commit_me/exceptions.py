@@ -19,15 +19,15 @@ class MissingCliError(Exception):
         super().__init__(self.MESSAGE_TEMPLATE.format(cli_names=",".join(cli_names)))
 
 
-class RepoWithoutChangesError(Exception):
-    MESSAGE = "Current state of repo doesn't have changes"
-
-    def __init__(self) -> None:
-        super().__init__(self.MESSAGE)
-
-
 class NoGitRepoError(Exception):
-    MESSAGE = "No Git repository found in {directory}"
+    MESSAGE = "No Git repository found in: {directory}"
 
     def __init__(self, *, directory: pathlib.Path) -> None:
-        super().__init__(self.MESSAGE.format(directory=str(directory)))
+        super().__init__(self.MESSAGE.format(directory=str(directory.absolute())))
+
+
+class NoStagedChangesError(Exception):
+    MESSAGE = "No staged changes found in: {directory}"
+
+    def __init__(self, *, directory: pathlib.Path) -> None:
+        super().__init__(self.MESSAGE.format(directory=str(directory.absolute())))

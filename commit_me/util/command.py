@@ -3,12 +3,11 @@
 import pathlib
 import shutil
 import subprocess
-from importlib.resources import path
 from typing import TypedDict
 
 import rich_click as click
 
-from commit_me.exceptions import MissingCliError, NoGitRepoError
+from commit_me.exceptions import MissingCliError, NoGitRepoError, NoStagedChangesError
 
 
 class Cli(TypedDict):
@@ -36,7 +35,7 @@ def is_cli_installed(cli_info: Cli) -> bool:
     return bool(shutil.which(cli_info["cmd"]))
 
 
-def check_required_clis() -> distdoutct[str, dict]:
+def check_required_clis() -> dict[str, dict]:
     """Raise MissingCliError if any required CLI is not installed."""
     missing_clis = [cli["name"] for cli in REQUIRED_CLIS if not is_cli_installed(cli)]
     if missing_clis:
@@ -66,18 +65,15 @@ def create_commit(
         git_commit()
 
 
-def has_changes(directory: pathlib.Path) -> bool:
-    try:
-        result = subprocess.run(
-            ["git", "status", "--porcelain"],
-            capture_output=True,
-            text=True,
-            check=True,
-            cwd=str(directory),
-        )
-    except subprocess.CalledProcessError as exception:
-        raise NoGitRepoError(
-            directory=directory,
-        ) from exception
-
-    return bool(result.stdout.strip())
+def has_stage_changes(directory: pathlib.Path) -> bool:
+    result = subprocess.run(
+        ["git", "diff", "--cached", "--quiet"],
+        text=True,
+        capture_output=True,
+        cwd=str(directory),
+    )
+    if result.returncode == 0:
+        return False
+    if result.returncode == 1:
+        return True
+    raise NoGitRepoError(directory=directory)
