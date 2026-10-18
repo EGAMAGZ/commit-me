@@ -3,6 +3,7 @@
 import pathlib
 
 import rich_click as click
+from rich.console import Console
 
 from commit_me.ai import generate_commit_message
 from commit_me.exceptions import MissingCliError
@@ -11,12 +12,12 @@ from commit_me.util.command import check_required_clis, create_commit
 
 @click.command()
 @click.argument(
-    "path",
+    "directory",
     type=click.Path(exists=True, path_type=pathlib.Path),
     default=pathlib.Path.cwd(),
 )
 @click.option("-p", "--preview", is_flag=True)
-def commit_me_cli(path: pathlib.Path, preview: bool) -> None:
+def commit_me_cli(directory: pathlib.Path, preview: bool) -> None:
     """Commit-me cli entrypoint
 
     Args:
@@ -24,13 +25,21 @@ def commit_me_cli(path: pathlib.Path, preview: bool) -> None:
         preview: Whether to preview the commit without applying it.
     """
     try:
+        console = Console()
         clis = check_required_clis()
-        commit_message = generate_commit_message(
-            opencode_binary=clis["opencode"]["path"],
-            directory=path,
-        )
+        with console.status("Calling opencode") as status:
+            commit_message = generate_commit_message(
+                opencode_binary=clis["opencode"]["path"],
+                directory=directory,
+                on_start=lambda: status.update("Starting opencode"),
+                on_thinking=lambda: status.update("Opencode is thinking..."),
+                on_progress=lambda e: None,
+                on_finish=lambda: status.update("Finish"),
+            )
+
         create_commit(
             message=commit_message,
+            directory=directory,
             preview=preview,
         )
     except MissingCliError as exception:

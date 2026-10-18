@@ -1,6 +1,9 @@
 """Utilities for detecting required command-line tools."""
 
+import pathlib
 import shutil
+import subprocess
+from importlib.resources import path
 from typing import TypedDict
 
 import rich_click as click
@@ -43,10 +46,21 @@ def check_required_clis() -> dict[str, dict]:
 
 
 def create_commit(
+    *,
     message: str,
+    directory: pathlib.Path,
     preview: bool,
 ) -> None:
+    def git_commit() -> None:
+        subprocess.run(
+            args=["git", "commit", "-m", f"{message}"],
+            cwd=str(directory),
+            check=True,
+        )
+
     if preview:
         click.echo(f"{message}")
         if click.confirm("Create commit?"):
-            pass
+            git_commit()
+    else:
+        git_commit()
