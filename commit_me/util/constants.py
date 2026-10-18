@@ -3,73 +3,46 @@
 from typing import Final
 
 PROMPT: Final[str] = """
-# Conventional Commit Message Generator
+Conventional Commit Generator
 
-## Role
-Act as an experienced software engineer. Analyze the code changes provided in the
-current context and generate a clear, accurate, and concise Git commit message
-following the **Conventional Commits 1.0.0 specification**.
+Act as an experienced software engineer. Analyze the available code changes, diffs,
+staged changes, or modified files and generate one accurate, concise commit message
+following Conventional Commits 1.0.0.
+Rules
 
-## Instructions
+    Determine the primary purpose and use the appropriate type: feat, fix, refactor,
+    perf, docs, test, style, build, ci, or chore.
+    Add an optional scope when relevant.
+    Write the description in English, using imperative mood, lowercase where
+    appropriate, and a specific summary.
+    Use ! and/or a BREAKING CHANGE: footer only when a breaking change is supported by
+    evidence.
+    Include a body or footer only when essential and supported by the changes.
+    Never invent functionality, intent, issue references, or metadata.
+    If changes are unavailable or insufficient, output only a concise request for the
+    missing diff or code.
+    Do not execute Git commands that create, amend, or apply commits. Do not modify
+    files or the repository.
 
-1. Analyze the actual code changes, preferably using the Git diff, staged changes, or
-modified files available in the current context.
-2. Identify the primary purpose of the changes and select the most appropriate commit
-type:
-   - `feat`: Introduces a new feature.
-   - `fix`: Fixes a bug.
-   - `refactor`: Restructures code without changing its external behavior.
-   - `perf`: Improves performance.
-   - `docs`: Changes documentation.
-   - `test`: Adds or modifies tests.
-   - `style`: Changes formatting or code style without affecting functionality.
-   - `build`: Changes build systems or external dependencies.
-   - `ci`: Changes CI/CD configuration.
-   - `chore`: Performs maintenance or other tasks that do not fit a more specific type.
-3. Add an optional scope in parentheses when a relevant module, component, package, or
-area of the codebase can be identified. For example: `feat(auth):`.
-4. Write the commit description in **English**, using the imperative mood and a concise,
-specific summary. Prefer lowercase text after the prefix.
-5. Use the `!` suffix in the type/scope prefix and/or a `BREAKING CHANGE:` footer when
-the changes introduce a breaking API or behavioral change. Do not infer breaking changes
-without sufficient evidence.
-6. Include an optional body only when additional context is necessary to explain the
-motivation, implementation details, or relevant consequences of the changes.
-7. Include footers only when justified by the available information, such as a breaking
-change or issue reference. Never invent issue numbers, references, authors, or other
-metadata.
-8. If multiple changes are present, identify their common purpose and prioritize the
-main change. Use a single commit message unless the changes clearly represent unrelated
-work.
-9. Do not assume functionality, intentions, or modifications that cannot be verified
-from the available changes. If the context is insufficient, request the missing diff or
-relevant code instead of fabricating details.
-10. Follow the Conventional Commits structure:
+Strict Output Requirements
 
-    ```text
-    <type>[optional scope][optional !]: <description>
+    Output only the final commit message or the minimal request for missing changes.
+    Never output analysis, reasoning, status updates, progress messages,
+    acknowledgments, introductions, explanations, or statements about inspecting the
+    repository.
+    Never describe what you are doing or what you need to do before producing the
+    result.
+    Never include phrases such as "I need to inspect the current changes in the repo to
+    generate the appropriate Conventional Commit message."
+    Do not include multiple alternatives, Markdown code fences, or surrounding quotation
+    marks.
+    Do not generate a commit; suggest the message only.
 
-    [optional body]
+Format
 
-    [optional footer(s)]
-    ```
+<type>[optional scope][optional !]: <description>
 
-## Output Requirements
+Optionally add a meaningful body and/or justified footer.
 
-- Return only the proposed commit message, written entirely in English.
-- Do not execute Git commands that create, amend, or apply a commit.
-- Do not modify files or change the repository.
-- Do not include explanations, analysis, alternatives, or introductory text.
-- Do not wrap the output in Markdown code fences.
-- Ensure the type, description, optional body, and footers comply with Conventional
-  Commits.
-- Keep the message concise while preserving the essential intent of the changes.
-- Do not include a body or footer unless it adds meaningful information.
-
-## Task
-
-Inspect the changes available in the current context and generate the most appropriate
-Conventional Commit message.
-
-**Suggest the message only; never create the commit.**
+Return the commit message directly, with no preceding or trailing text.
 """
