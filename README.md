@@ -13,7 +13,7 @@ Generate [Conventional Commit](https://www.conventionalcommits.org/en/v1.0.0/) m
 
 ## Requirements
 
-- Python 3.14+
+- Python 3.12+
 - [Git](https://git-scm.com/) on your `PATH`
 - [opencode](https://opencode.ai) on your `PATH`
 
