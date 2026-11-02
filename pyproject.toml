@@ -1,8 +1,34 @@
 [project]
 name = "commit-me"
-version = "0.1.0"
-description = "Add your description here"
+version = "0.5.0"
+description = "Generate Conventional Commit messages for your staged changes with opencode and commit them in one step."
+keywords = [
+    "ai",
+    "cli",
+    "commit",
+    "commit-message",
+    "conventional-commits",
+    "git",
+    "llm",
+    "opencode",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Software Development :: Version Control :: Git",
+]
+authors = ["Gamaliel Garcia <46827955+EGAMAGZ@users.noreply.github.com>"]
+maintainers = ["Gamaliel Garcia <46827955+EGAMAGZ@users.noreply.github.com>"]
 readme = "README.md"
+repository = "https://github.com/EGAMAGZ/commit-me"
+homepage = "https://github.com/EGAMAGZ/commit-me"
+license = "MIT"
 requires-python = ">=3.12"
 dependencies = [
     "click>=8.5.0",
