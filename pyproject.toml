@@ -17,6 +17,9 @@ dev = [
     "ty>=0.0.80",
 ]
 
+[project.scripts]
+commit-me = "commit_me.cli:commit_me_cli"
+
 
 [tool.ruff]
 line-length = 88
