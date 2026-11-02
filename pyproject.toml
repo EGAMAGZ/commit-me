@@ -46,6 +46,9 @@ dev = [
     "ruff>=0.16.7",
     "ty>=0.0.80",
 ]
+test = [
+    "pytest>=9.1.1",
+]
 
 [project.scripts]
 commit-me = "commit_me.cli:commit_me_cli"
