@@ -1,9 +1,12 @@
 name: Publish to PyPI
 
 on:
-  release:
-    types:
-      - published
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Versión de la release (semver, ej. 1.2.3)'
+        required: true
+        type: string
 
 jobs:
   build:
@@ -24,6 +27,16 @@ jobs:
         uses: astral-sh/setup-uv@v6
         with:
           enable-cache: true
+
+      - name: Update project version
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          uv version "${{ inputs.version }}"
+
+      - name: Update version from release tag
+        if: github.event_name == 'release'
+        run: |
+          uv version "${GITHUB_REF_NAME#v}"
 
       - name: Install dependencies
         run: uv sync --locked --no-install-project --no-dev --no-group test
