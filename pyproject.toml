@@ -31,8 +31,6 @@ maintainers = [
     { name = "Gamaliel Garcia", email = "46827955+EGAMAGZ@users.noreply.github.com" }
 ]
 readme = "README.md"
-repository = "https://github.com/EGAMAGZ/commit-me"
-homepage = "https://github.com/EGAMAGZ/commit-me"
 license = "MIT"
 requires-python = ">=3.12"
 dependencies = [
@@ -41,10 +39,10 @@ dependencies = [
     "rich>=15.0.0",
     "rich-click>=1.9.9",
 ]
-include = [
-	"LICENSE",
-	"README.md",
-]
+
+[project.urls]
+Homepage = "https://github.com/EGAMAGZ/commit-me"
+Repository = "https://github.com/EGAMAGZ/commit-me"
 
 [dependency-groups]
 dev = [
